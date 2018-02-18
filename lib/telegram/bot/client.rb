@@ -20,10 +20,29 @@ module Telegram
 
       def listen(&block)
         logger.info('Starting bot')
-        running = true
-        Signal.trap('INT') { running = false }
-        fetch_updates(&block) while running
-        exit
+        catch(:stop) {
+          loop { fetch_updates(&block) }
+        }
+      end
+
+      # This can also be written in any calling code (the throw does not have to appear
+      # within the static scope of the catch), but is included here for completeness
+      def stop
+        throw :stop
+      end
+
+      # Listen for a given period of time (in minutes)
+      def listen_for(minutes = 15, &block)
+        counter == 15 * 60
+        interval = 5 # Check every 5 seconds
+        interval_timer = 1 # must start at 1
+        now = Time.now
+        while Time.now - now < counter
+          if interval_timer % interval == 0 #Every 5 attempts the activity will process
+            fetch_updates(&block)
+          end
+          interval_timer = interval_timer + 1
+        end
       end
 
       def fetch_updates
