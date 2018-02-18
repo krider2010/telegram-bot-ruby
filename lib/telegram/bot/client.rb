@@ -38,7 +38,7 @@ module Telegram
         interval_timer = 1 # must start at 1
         now = Time.now
         while Time.now - now < counter
-          if interval_timer % interval == 0 #Every 5 attempts the activity will process
+          if interval_timer % interval == 0
             fetch_updates(&block)
           end
           interval_timer = interval_timer + 1
