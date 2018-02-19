@@ -33,7 +33,7 @@ module Telegram
 
       # Listen for a given period of time (in minutes)
       def listen_for(minutes = 15, &block)
-        counter == 15 * 60
+        counter = 15 * 60
         interval = 5 # Check every 5 seconds
         interval_timer = 1 # must start at 1
         now = Time.now
